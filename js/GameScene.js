@@ -69,12 +69,7 @@ export default class GameScene extends Phaser.Scene {
             },
 
             {
-                name:"Hide Rovers",
-                key:"S"
-            },
-
-            {
-                name:"Map",
+                name:"Hide Map",
                 key:"V"
             },
 
@@ -86,8 +81,27 @@ export default class GameScene extends Phaser.Scene {
             {
                 name:"Info",
                 key:"2"
-            }
+            },
             
+            {
+                name: "↑",
+                key: "W"
+            },
+
+            {
+                name: "↓",
+                key: "S"
+            },
+
+            {
+                name: "←",
+                key: "A"
+            },
+
+            {
+                name: "→",
+                key: "D"
+            },
 
         ];
 
@@ -399,6 +413,22 @@ this.commands.push(card);
 
             case "KeyV":
                 pressedKey = "V";
+                break;
+
+            case "KeyW":
+                pressedKey = "W";
+                break;
+
+            case "KeyS":
+                pressedKey = "S";
+                break;
+
+            case "KeyA":
+                pressedKey = "A";
+                break;
+
+            case "KeyD":
+                pressedKey = "D";
                 break;
 
             case "Digit1":
