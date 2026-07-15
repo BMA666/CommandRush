@@ -6,6 +6,14 @@ export default class MenuScene extends Phaser.Scene {
 
     }
 
+    preload() {
+
+    this.load.image(
+        "hotkeys",
+        "assets/images/hotkeys.png"
+    );
+
+    }
 
     create() {
 
@@ -140,20 +148,83 @@ export default class MenuScene extends Phaser.Scene {
 
 
 
-        // Управление
+        // Кнопка Hotkeys
 
-        this.add.text(
+        const hotkeysButton = this.add.text(
             640,
             610,
-            "Controls: Space, C, F, R, T, Q, S, V, 1, 2",
+            "📖 Hotkeys",
             {
                 fontFamily:"Arial",
-                fontSize:"20px",
-                color:"#6b7280"
+                fontSize:"22px",
+                color:"#60a5fa",
+                fontStyle:"bold"
             }
         )
-        .setOrigin(0.5);
+        .setOrigin(0.5)
+        .setInteractive({ useHandCursor:true });
 
+        const overlay = this.add.rectangle(
+            640,
+            360,
+            1280,
+            720,
+            0x000000,
+            0.75
+        );
+
+        overlay.setVisible(false);
+
+        const hotkeysImage = this.add.image(
+            640,
+            360,
+            "hotkeys"
+        );
+
+        hotkeysImage.setVisible(false);
+        const maxWidth = 1220;
+        const maxHeight = 680;
+
+        const scale = Math.min(
+            maxWidth / hotkeysImage.width,
+            maxHeight / hotkeysImage.height
+        );
+
+        hotkeysImage.setScale(scale);
+
+        const closeButton = this.add.text(
+            1210,
+            45,
+            "✕",
+            {
+                fontFamily: "Arial",
+                fontSize: "36px",
+                color: "#ffffff",
+                fontStyle: "bold"
+            }
+        )
+        .setOrigin(0.5)
+        .setInteractive({ useHandCursor: true });
+
+        closeButton.setVisible(false);
+
+        overlay.setInteractive();
+
+        hotkeysButton.on("pointerdown", () => {
+
+          
+            hotkeysImage.setVisible(true);
+            closeButton.setVisible(true);
+
+        });
+
+        closeButton.on("pointerdown", () => {
+
+            overlay.setVisible(false);
+            hotkeysImage.setVisible(false);
+            closeButton.setVisible(false);
+
+        });
 
 
     }
