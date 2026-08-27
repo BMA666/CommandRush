@@ -1,38 +1,46 @@
 export default class MenuScene extends Phaser.Scene {
 
     constructor() {
-
         super("MenuScene");
-
     }
+
 
     preload() {
 
-    this.load.image(
-        "hotkeys",
-        "assets/images/hotkeys.png"
-    );
+        this.load.image(
+            "hotkeys",
+            "assets/images/hotkeys.png"
+        );
 
     }
 
+
     create() {
-
-
-        // Фон
 
         this.cameras.main.setBackgroundColor("#111827");
 
 
+        // =====================================================
+        // РАЗМЕР ЭКРАНА
+        // =====================================================
 
-        // Заголовок
+        const width = this.scale.width;
+        const height = this.scale.height;
+
+        const centerX = width / 2;
+
+
+        // =====================================================
+        // ЗАГОЛОВОК
+        // =====================================================
 
         this.add.text(
-            640,
-            180,
+            centerX,
+            height * 0.25,
             "COMMAND RUSH",
             {
-                fontFamily: "Arial",
-                fontSize: "64px",
+                fontFamily: "sans-serif",
+                fontSize: 64,
                 color: "#ffffff",
                 fontStyle: "bold"
             }
@@ -40,83 +48,185 @@ export default class MenuScene extends Phaser.Scene {
         .setOrigin(0.5);
 
 
-
-        // Подзаголовок
+        // =====================================================
+        // ПОДЗАГОЛОВОК
+        // =====================================================
 
         this.add.text(
-            640,
-            260,
+            centerX,
+            height * 0.35,
             "React faster. Command faster.",
             {
-                fontFamily: "Arial",
-                fontSize: "24px",
+                fontFamily: "sans-serif",
+                fontSize: 24,
                 color: "#9ca3af"
             }
         )
         .setOrigin(0.5);
 
 
+        // =====================================================
+        // ЛУЧШИЙ РЕЗУЛЬТАТ
+        // =====================================================
 
-        // Лучший результат
-
-        let bestScore = localStorage.getItem("commandRushBest") || 0;
+        let bestScore =
+            localStorage.getItem("commandRushBest") || 0;
 
 
         this.bestText = this.add.text(
-            640,
-            330,
+            centerX,
+            height * 0.42,
             "Best score: " + bestScore,
             {
-                fontFamily: "Arial",
-                fontSize: "28px",
+                fontFamily: "sans-serif",
+                fontSize: 28,
                 color: "#facc15"
             }
         )
         .setOrigin(0.5);
 
 
+        // =====================================================
+        // ПОДПИСЬ ПОЛЯ ИМЕНИ
+        // =====================================================
 
+        this.nameLabel = document.createElement("div");
 
-        // Кнопка Play
+        this.nameLabel.textContent = "Enter your name";
 
-        const button = this.add.rectangle(
-            640,
-            450,
-            260,
-            80,
-            0xffffff
+        this.nameLabel.style.position = "absolute";
+        this.nameLabel.style.left = "50%";
+        this.nameLabel.style.top = "47%";
+
+        this.nameLabel.style.transform =
+            "translate(-50%, -50%)";
+
+        this.nameLabel.style.color = "#9ca3af";
+        this.nameLabel.style.fontFamily = "Arial";
+        this.nameLabel.style.fontSize = "18px";
+
+        this.nameLabel.style.pointerEvents = "none";
+
+        document.body.appendChild(
+            this.nameLabel
         );
 
 
+        // =====================================================
+        // ПОЛЕ ИМЕНИ
+        // =====================================================
+
+        this.nameInput =
+            document.createElement("input");
+
+        this.nameInput.type = "text";
+
+        this.nameInput.placeholder =
+            "Your name";
+
+        this.nameInput.maxLength = 30;
+
+        this.nameInput.autocomplete = "off";
+
+
+        this.nameInput.style.position =
+            "absolute";
+
+        this.nameInput.style.left =
+            "50%";
+
+        this.nameInput.style.top =
+            "52%";
+
+        this.nameInput.style.transform =
+            "translate(-50%, -50%)";
+
+
+        this.nameInput.style.width =
+            "min(300px, 70vw)";
+
+        this.nameInput.style.height =
+            "45px";
+
+
+        this.nameInput.style.fontFamily =
+            "Arial";
+
+        this.nameInput.style.fontSize =
+            "22px";
+
+        this.nameInput.style.textAlign =
+            "center";
+
+
+        this.nameInput.style.border =
+            "none";
+
+        this.nameInput.style.borderRadius =
+            "8px";
+
+        this.nameInput.style.outline =
+            "none";
+
+
+        this.nameInput.style.padding =
+            "5px 10px";
+
+        this.nameInput.style.boxSizing =
+            "border-box";
+
+
+        document.body.appendChild(
+            this.nameInput
+        );
+
+
+        // =====================================================
+        // КНОПКА PLAY
+        // =====================================================
+
+        const buttonY =
+            height * 0.66;
+
+
+        const button =
+            this.add.rectangle(
+                centerX,
+                buttonY,
+                260,
+                75,
+                0xffffff
+            );
+
+
         button.setInteractive({
-            useHandCursor:true
+            useHandCursor: true
         });
 
 
-
-        const buttonText = this.add.text(
-            640,
-            450,
-            "PLAY",
-            {
-                fontFamily:"Arial",
-                fontSize:"36px",
-                color:"#111827",
-                fontStyle:"bold"
-            }
-        )
-        .setOrigin(0.5);
-
-
+        const buttonText =
+            this.add.text(
+                centerX,
+                buttonY,
+                "PLAY",
+                {
+                    fontFamily: "sans-serif",
+                    fontSize: 34,
+                    color: "#111827",
+                    fontStyle: "bold"
+                }
+            )
+            .setOrigin(0.5);
 
 
-        // Эффект наведения
+        // Наведение
 
         button.on(
             "pointerover",
             () => {
 
                 button.setScale(1.05);
+                buttonText.setScale(1.05);
 
             }
         );
@@ -127,107 +237,227 @@ export default class MenuScene extends Phaser.Scene {
             () => {
 
                 button.setScale(1);
+                buttonText.setScale(1);
 
             }
         );
-
 
 
         // Запуск игры
 
-        button.on(
-            "pointerdown",
-            () => {
+button.on(
+    "pointerdown",
+    () => {
 
-                this.scene.start(
-                    "GameScene"
-                );
-
-            }
-        );
+        const playerName =
+            this.nameInput.value.trim();
 
 
+        // Имя обязательно
 
-        // Кнопка Hotkeys
+        if (!playerName) {
 
-        const hotkeysButton = this.add.text(
-            640,
-            610,
-            "📖 Hotkeys",
+            this.nameInput.focus();
+
+            this.nameInput.style.border =
+                "2px solid #ef4444";
+
+            return;
+
+        }
+
+
+        this.nameInput.style.border =
+            "none";
+
+
+        this.scene.start(
+            "GameScene",
             {
-                fontFamily:"Arial",
-                fontSize:"22px",
-                color:"#60a5fa",
-                fontStyle:"bold"
+                playerName: playerName
             }
-        )
-        .setOrigin(0.5)
-        .setInteractive({ useHandCursor:true });
-
-        const overlay = this.add.rectangle(
-            640,
-            360,
-            1280,
-            720,
-            0x000000,
-            0.75
         );
+
+    }
+);
+
+
+        // =====================================================
+        // HOTKEYS
+        // =====================================================
+
+        const hotkeysButton =
+            this.add.text(
+                centerX,
+                height * 0.82,
+                "📖 Hotkeys",
+                {
+                    fontFamily: "sans-serif",
+                    fontSize: 22,
+                    color: "#60a5fa",
+                    fontStyle: "bold"
+                }
+            )
+            .setOrigin(0.5)
+            .setInteractive({
+                useHandCursor: true
+            });
+
+
+        // =====================================================
+        // OVERLAY
+        // =====================================================
+
+        const overlay =
+            this.add.rectangle(
+                centerX,
+                height / 2,
+                width,
+                height,
+                0x000000,
+                0.85
+            );
+
 
         overlay.setVisible(false);
 
-        const hotkeysImage = this.add.image(
-            640,
-            360,
-            "hotkeys"
-        );
+
+        // =====================================================
+        // КАРТИНКА HOTKEYS
+        // =====================================================
+
+        const hotkeysImage =
+            this.add.image(
+                centerX,
+                height / 2,
+                "hotkeys"
+            );
+
 
         hotkeysImage.setVisible(false);
-        const maxWidth = 1220;
-        const maxHeight = 680;
 
-        const scale = Math.min(
-            maxWidth / hotkeysImage.width,
-            maxHeight / hotkeysImage.height
-        );
+
+        const maxWidth =
+            width * 0.9;
+
+        const maxHeight =
+            height * 0.85;
+
+
+        const scale =
+            Math.min(
+                maxWidth / hotkeysImage.width,
+                maxHeight / hotkeysImage.height
+            );
+
 
         hotkeysImage.setScale(scale);
 
-        const closeButton = this.add.text(
-            1210,
-            45,
-            "✕",
-            {
-                fontFamily: "Arial",
-                fontSize: "36px",
-                color: "#ffffff",
-                fontStyle: "bold"
-            }
-        )
-        .setOrigin(0.5)
-        .setInteractive({ useHandCursor: true });
+
+        // =====================================================
+        // КНОПКА ЗАКРЫТИЯ
+        // =====================================================
+
+        const closeButton =
+            this.add.text(
+                width - 45,
+                45,
+                "✕",
+                {
+                    fontFamily: "Arial",
+                    fontSize: 36,
+                    color: "#ffffff",
+                    fontStyle: "bold"
+                }
+            )
+            .setOrigin(0.5)
+            .setInteractive({
+                useHandCursor: true
+            });
+
 
         closeButton.setVisible(false);
 
-        overlay.setInteractive();
 
-        hotkeysButton.on("pointerdown", () => {
+        // =====================================================
+        // HOTKEYS OPEN
+        // =====================================================
 
-          
-            hotkeysImage.setVisible(true);
-            closeButton.setVisible(true);
+        hotkeysButton.on(
+            "pointerdown",
+            () => {
 
-        });
+                overlay.setVisible(true);
 
-        closeButton.on("pointerdown", () => {
+                hotkeysImage.setVisible(true);
 
-            overlay.setVisible(false);
-            hotkeysImage.setVisible(false);
-            closeButton.setVisible(false);
+                closeButton.setVisible(true);
 
-        });
+            }
+        );
 
+
+        // =====================================================
+        // HOTKEYS CLOSE
+        // =====================================================
+
+        closeButton.on(
+            "pointerdown",
+            () => {
+
+                overlay.setVisible(false);
+
+                hotkeysImage.setVisible(false);
+
+                closeButton.setVisible(false);
+
+            }
+        );
+
+
+        // =====================================================
+        // УДАЛЕНИЕ HTML ПОЛЕЙ
+        // =====================================================
+
+        this.events.once(
+            "shutdown",
+            () => {
+
+                if (this.nameInput) {
+
+                    this.nameInput.remove();
+
+                }
+
+                if (this.nameLabel) {
+
+                    this.nameLabel.remove();
+
+                }
+
+            }
+        );
+
+
+        this.events.once(
+            "destroy",
+            () => {
+
+                if (this.nameInput) {
+
+                    this.nameInput.remove();
+
+                }
+
+                if (this.nameLabel) {
+
+                    this.nameLabel.remove();
+
+                }
+
+            }
+        );
 
     }
-
 
 }

@@ -1,3 +1,4 @@
+import { supabase } from "./supabase.js";
 export default class ResultScene extends Phaser.Scene {
 
 
@@ -9,18 +10,66 @@ export default class ResultScene extends Phaser.Scene {
 
 
 
-    init(data){
+init(data){
 
-        this.finalScore =
-            data.score || 0;
+    console.log("RESULT SCENE ЗАПУСТИЛАСЬ");
 
+    this.playerName =
+    data.playerName || "Unknown";
+    this.finalScore = data.score || 0;
+    this.finalCombo = data.combo || 0;
 
-        this.finalCombo =
-            data.combo || 0;
+    this.playTime = data.playTime || 0;
+    this.successfulCommands = data.successfulCommands || 0;
+    this.missedCommands = data.missedCommands || 0;
+    this.wrongAnswers = data.wrongAnswers || 0;
+
+    console.log("Score:", this.finalScore);
+    console.log("Combo:", this.finalCombo);
+    console.log("Play time:", this.playTime);
+    console.log("Successful:", this.successfulCommands);
+    console.log("Missed:", this.missedCommands);
+    console.log("Wrong:", this.wrongAnswers);
+
+    this.saveResult();
+
+}
+
+async saveResult(){
+
+    console.log("ПЫТАЕМСЯ ОТПРАВИТЬ В SUPABASE");
+
+    const { data, error } = await supabase
+        .from("game_results")
+        .insert([
+            {
+                player_name: this.playerName,
+                score: this.finalScore,
+                best_combo: this.finalCombo,
+                play_time: this.playTime,
+                successful_commands: this.successfulCommands,
+                missed_commands: this.missedCommands,
+                wrong_answers: this.wrongAnswers
+            }
+        ]);
+
+    if(error){
+
+        console.error(
+            "ОШИБКА SUPABASE:",
+            error
+        );
+
+    } else {
+
+        console.log(
+            "РЕЗУЛЬТАТ ОТПРАВЛЕН В SUPABASE:",
+            data
+        );
 
     }
 
-
+}
 
 
     create(){

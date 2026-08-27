@@ -9,12 +9,23 @@ export default class GameScene extends Phaser.Scene {
 
 
 
-    create() {
+        create(data) {
 
+            this.cameras.main.setBackgroundColor("#111827");
 
-        this.cameras.main.setBackgroundColor("#111827");
+            this.fpsText = this.add.text(
+            40,
+            110,
+            "FPS: 0",
+            {
+                fontFamily: "sans-serif",
+                fontSize: 18,
+                color: "#6b7280"
+            }
+        );
 
-
+            this.playerName =
+                data.playerName || "Unknown";
         // Игровые данные
 
         this.score = 0;
@@ -28,6 +39,10 @@ export default class GameScene extends Phaser.Scene {
         this.speed = 120;
 
         this.timeAlive = 0;
+
+        this.successfulCommands = 0;
+        this.missedCommands = 0;
+        this.wrongAnswers = 0;
 
 
         this.commands = [];
@@ -199,78 +214,59 @@ this.speedText = this.add.text(
 
     }
 
+update(time, delta) {
+
+    this.fpsText.setText(
+        "FPS: " + Math.round(this.game.loop.actualFps)
+    );
+
+    this.timeAlive += delta / 1000;
+
+    // Плавное ускорение
+
+    this.speed =
+        120 +
+        this.timeAlive * 5;
+
+    let speedMultiplier =
+        (this.speed / 120).toFixed(1);
+
+    this.speedText.setText(
+        "Speed: x" + speedMultiplier
+    );
 
 
+    // Движение команд
 
+    for (let i = this.commands.length - 1; i >= 0; i--) {
 
-    update(time,delta) {
+        const command = this.commands[i];
 
+        const safeDelta = Math.min(delta, 32);
 
-        this.timeAlive += delta / 1000;
+        const move =
+            this.speed * (safeDelta / 1000);
 
+        command.y += move;
 
+        if (command.textObject) {
 
-        // Плавное ускорение
-
-        this.speed =
-            120 +
-            this.timeAlive * 5;
-        let speedMultiplier =
-    (this.speed / 120).toFixed(1);
-
-
-this.speedText.setText(
-    "Speed: x" + speedMultiplier
-);
-
-
-        // движение команд
-
-for(let i=this.commands.length-1;i>=0;i--){
-
-
-    let command =
-        this.commands[i];
-
-
-    let move =
-        this.speed *
-        delta /
-        1000;
-
-
-    command.y += move;
-
-
-    if(command.textObject){
-
-        command.textObject.y =
-            command.y;
-
-        command.textObject.x =
-            command.x;
-
-    }
-
-            if(
-                command.y > 650
-            ){
-
-                this.missCommand(
-                    command
-                );
-
-            }
-
+            command.textObject.setPosition(
+                command.x,
+                command.y
+            );
 
         }
 
+        if (command.y > 650) {
+
+            this.missCommand(command);
+
+        }
 
     }
 
-
-
-
+}
 
 
     spawnCommand(){
@@ -342,7 +338,7 @@ this.tweens.add({
 
     scale: 1,
 
-    duration: 250,
+    duration: 350,
 
     ease: "Back.out"
 
@@ -355,7 +351,9 @@ this.tweens.add({
 
     alpha: 1,
 
-    duration: 250
+    duration: 300,
+
+    ease: "Power2"
 
 });
 
@@ -495,53 +493,14 @@ this.commands.push(card);
 
 
     successCommand(command){
+    
+    this.score += 100;
 
-        let bonus = this.add.text(
+    this.combo++;
 
-    command.x,
-
-    command.y,
-
-    "+100",
-
-    {
-        fontFamily:"Arial",
-        fontSize:"28px",
-        color:"#4ade80",
-        fontStyle:"bold"
-    }
-
-)
-.setOrigin(0.5);
-
-
-
-this.tweens.add({
-
-    targets:bonus,
-
-    y:command.y - 80,
-
-    alpha:0,
-
-    duration:600,
-
-    onComplete:()=>{
-
-        bonus.destroy();
-
-    }
-
-});
-
-        this.score += 100;
-
-
-        this.combo++;
-
-        if (this.combo > this.bestCombo) {
+    if (this.combo > this.bestCombo) {
         this.bestCombo = this.combo;
-        }
+    }
 
 
         // бонус за серию
@@ -563,39 +522,9 @@ this.tweens.add({
             "Combo: x" + this.combo
         );
 
+    // Удаляем выбранную карточку
 
-
-        // Анимация исчезновения
-
-
-        this.tweens.add({
-
-            targets:[
-                command,
-                command.textObject
-            ],
-
-            scale:0,
-
-            alpha:0,
-
-            duration:200,
-
-
-            onComplete:()=>{
-
-
-                this.removeCommand(
-                    command
-                );
-
-
-            }
-
-
-        });
-
-
+    this.removeCommand(command);
 
     }
 
@@ -607,7 +536,7 @@ this.tweens.add({
 
     missCommand(command){
 
-
+        this.missedCommands++;
 
         this.lives--;
 
@@ -654,6 +583,8 @@ this.tweens.add({
 
 
     wrongAnswer(){
+    this.wrongAnswers++;
+
     this.combo = 0;
 
 
@@ -798,13 +729,19 @@ this.tweens.add({
 
 
 
-        this.scene.start(
-            "ResultScene",
-            {
-                score:this.score,
-                combo:this.bestCombo
-            }
-        );
+            this.scene.start(
+                "ResultScene",
+                {
+                    playerName: this.playerName,
+                    score: this.score,
+                    combo: this.bestCombo,
+                    playTime: this.timeAlive,
+                    successfulCommands: this.successfulCommands,
+                    missedCommands: this.missedCommands,
+                    wrongAnswers: this.wrongAnswers
+                    
+                }
+            );
 
 
 
