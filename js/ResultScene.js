@@ -71,276 +71,203 @@ async saveResult(){
 
 }
 
+create(){
 
-    create(){
+    this.cameras.main.setBackgroundColor("#111827");
 
-
-        this.cameras.main.setBackgroundColor("#111827");
-
-
-
-        // Заголовок
+    const width = this.scale.width;
+    const height = this.scale.height;
+    const centerX = width / 2;
 
 
+    // Заголовок
+
+    this.add.text(
+        centerX,
+        height * 0.18,
+        "GAME OVER",
+        {
+            fontFamily:"sans-serif",
+            fontSize:"64px",
+            color:"#ffffff",
+            fontStyle:"bold"
+        }
+    )
+    .setOrigin(0.5);
+
+
+    // Очки
+
+    this.add.text(
+        centerX,
+        height * 0.34,
+        "Score: " + this.finalScore,
+        {
+            fontFamily:"sans-serif",
+            fontSize:"36px",
+            color:"#facc15"
+        }
+    )
+    .setOrigin(0.5);
+
+
+    // Комбо
+
+    this.add.text(
+        centerX,
+        height * 0.43,
+        "Best combo: x" + this.finalCombo,
+        {
+            fontFamily:"sans-serif",
+            fontSize:"28px",
+            color:"#ffffff"
+        }
+    )
+    .setOrigin(0.5);
+
+
+    // Лучший результат
+
+    let best =
+        localStorage.getItem(
+            "commandRushBest"
+        ) || 0;
+
+
+    this.add.text(
+        centerX,
+        height * 0.52,
+        "Record: " + best,
+        {
+            fontFamily:"sans-serif",
+            fontSize:"28px",
+            color:"#4ade80"
+        }
+    )
+    .setOrigin(0.5);
+
+
+    // Кнопка повторить
+
+    const buttonY = height * 0.70;
+
+    let button = this.add.rectangle(
+        centerX,
+        buttonY,
+        300,
+        80,
+        0xffffff
+    );
+
+
+    button.setInteractive({
+        useHandCursor:true
+    });
+
+
+    let buttonText =
         this.add.text(
-
-            640,
-
-            140,
-
-            "GAME OVER",
-
+            centerX,
+            buttonY,
+            "PLAY AGAIN",
             {
-                fontFamily:"Arial",
-                fontSize:"64px",
-                color:"#ffffff",
+                fontFamily:"sans-serif",
+                fontSize:"30px",
+                color:"#111827",
                 fontStyle:"bold"
             }
-
         )
         .setOrigin(0.5);
 
 
+    button.on(
+        "pointerover",
+        ()=>{
 
+            button.setScale(1.05);
+            buttonText.setScale(1.05);
 
+        }
+    );
 
-        // Очки
 
+    button.on(
+        "pointerout",
+        ()=>{
 
-        this.add.text(
+            button.setScale(1);
+            buttonText.setScale(1);
 
-            640,
+        }
+    );
 
-            260,
 
-            "Score: " + this.finalScore,
+    button.on(
+        "pointerdown",
+        ()=>{
 
-            {
-                fontFamily:"Arial",
-                fontSize:"36px",
-                color:"#facc15"
-            }
-
-        )
-        .setOrigin(0.5);
-
-
-
-
-
-        // Комбо
-
-
-        this.add.text(
-
-            640,
-
-            320,
-
-            "Best combo: x" + this.finalCombo,
-
-            {
-                fontFamily:"Arial",
-                fontSize:"28px",
-                color:"#ffffff"
-            }
-
-        )
-        .setOrigin(0.5);
-
-
-
-
-
-        // Лучший результат
-
-
-        let best =
-            localStorage.getItem(
-                "commandRushBest"
-            ) || 0;
-
-
-
-        this.add.text(
-
-            640,
-
-            380,
-
-            "Record: " + best,
-
-            {
-                fontFamily:"Arial",
-                fontSize:"28px",
-                color:"#4ade80"
-            }
-
-        )
-        .setOrigin(0.5);
-
-
-
-
-
-
-
-
-        // Кнопка повторить
-
-
-        let button = this.add.rectangle(
-
-            640,
-
-            520,
-
-            300,
-
-            80,
-
-            0xffffff
-
-        );
-
-
-
-        button.setInteractive({
-
-            useHandCursor:true
-
-        });
-
-
-
-
-
-        let buttonText =
-            this.add.text(
-
-                640,
-
-                520,
-
-                "PLAY AGAIN",
-
+            this.scene.start(
+                "GameScene",
                 {
-                    fontFamily:"Arial",
-                    fontSize:"30px",
-                    color:"#111827",
-                    fontStyle:"bold"
+                    playerName: this.playerName
                 }
+            );
 
-            )
-            .setOrigin(0.5);
-
-
-
+        }
+    );
 
 
+    // Возврат в меню
 
-        button.on(
-
-            "pointerover",
-
-            ()=>{
-
-                button.setScale(1.05);
-
+    let menuButton =
+        this.add.text(
+            centerX,
+            height * 0.84,
+            "Main Menu",
+            {
+                fontFamily:"sans-serif",
+                fontSize:"24px",
+                color:"#9ca3af"
             }
-
-        );
-
-
-
-        button.on(
-
-            "pointerout",
-
-            ()=>{
-
-                button.setScale(1);
-
-            }
-
-        );
+        )
+        .setOrigin(0.5);
 
 
+    menuButton.setInteractive({
+        useHandCursor:true
+    });
 
 
+    menuButton.on(
+        "pointerover",
+        ()=>{
 
-        button.on(
+            menuButton.setScale(1.05);
 
-            "pointerdown",
-
-            ()=>{
-
-
-                this.scene.start(
-                    "GameScene"
-                );
+        }
+    );
 
 
-            }
+    menuButton.on(
+        "pointerout",
+        ()=>{
 
-        );
+            menuButton.setScale(1);
 
-
-
-
-
-
-        // Возврат в меню
+        }
+    );
 
 
-        let menuButton =
-            this.add.text(
+    menuButton.on(
+        "pointerdown",
+        ()=>{
 
-                640,
+            this.scene.start(
+                "MenuScene"
+            );
 
-                620,
+        }
+    );
 
-                "Main Menu",
-
-                {
-                    fontFamily:"Arial",
-                    fontSize:"24px",
-                    color:"#9ca3af"
-                }
-
-            )
-            .setOrigin(0.5);
-
-
-
-        menuButton.setInteractive({
-
-            useHandCursor:true
-
-        });
-
-
-
-        menuButton.on(
-
-            "pointerdown",
-
-            ()=>{
-
-
-                this.scene.start(
-                    "MenuScene"
-                );
-
-
-            }
-
-        );
-
-
-
-    }
-
-
-
+}
 }

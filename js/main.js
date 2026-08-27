@@ -6,7 +6,7 @@ import ResultScene from "./ResultScene.js";
 const config = {
 
     type: Phaser.AUTO,
-
+    pixelArt: true,
     width: window.innerWidth,
     height: window.innerHeight,
 
@@ -17,11 +17,10 @@ const config = {
     resolution: 1,
 
     scale: {
-
         mode: Phaser.Scale.RESIZE,
-
-        autoCenter: Phaser.Scale.CENTER_BOTH
-
+        parent: "game",
+        width: window.innerWidth,
+        height: window.innerHeight
     },
 
     scene: [

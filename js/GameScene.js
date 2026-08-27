@@ -13,16 +13,16 @@ export default class GameScene extends Phaser.Scene {
 
             this.cameras.main.setBackgroundColor("#111827");
 
-            this.fpsText = this.add.text(
-            40,
-            110,
-            "FPS: 0",
-            {
-                fontFamily: "sans-serif",
-                fontSize: 18,
-                color: "#6b7280"
-            }
-        );
+           // this.fpsText = this.add.text(
+           // 40,
+           // 110,
+          //  "FPS: 0",
+            //{
+        //        fontFamily: "sans-serif",
+      //          fontSize: 18,
+    //            color: "#6b7280"
+  //          }
+//        );
 
             this.playerName =
                 data.playerName || "Unknown";
@@ -139,7 +139,7 @@ export default class GameScene extends Phaser.Scene {
 
 
         this.comboText = this.add.text(
-            500,
+            this.scale.width / 2,
             30,
             "Combo: x0",
             {
@@ -147,12 +147,13 @@ export default class GameScene extends Phaser.Scene {
                 fontSize:"28px",
                 color:"#facc15"
             }
-        );
+        )
+        .setOrigin(0.5, 0);
 
 
 
         this.lifeText = this.add.text(
-            1050,
+            this.scale.width - 120,
             30,
             "♥♥♥",
             {
@@ -161,7 +162,7 @@ export default class GameScene extends Phaser.Scene {
                 color:"#ef4444"
             }
         );
-this.speedText = this.add.text(
+        this.speedText = this.add.text(
     40,
     75,
     "Speed: x1.0",
@@ -177,12 +178,12 @@ this.speedText = this.add.text(
         // Нижняя линия
 
         this.finishLine = this.add.rectangle(
-            640,
-            680,
-            1100,
-            3,
-            0xffffff
-        );
+        this.scale.width / 2,
+        this.scale.height - 40,
+        this.scale.width * 0.85,
+        3,
+        0xffffff
+    );
 
 
 
@@ -216,9 +217,9 @@ this.speedText = this.add.text(
 
 update(time, delta) {
 
-    this.fpsText.setText(
-        "FPS: " + Math.round(this.game.loop.actualFps)
-    );
+   // this.fpsText.setText(
+   //     "FPS: " + Math.round(this.game.loop.actualFps)
+ //   );
 
     this.timeAlive += delta / 1000;
 
@@ -247,18 +248,18 @@ update(time, delta) {
         const move =
             this.speed * (safeDelta / 1000);
 
-        command.y += move;
+        command.y = Math.round(command.y + move);
 
         if (command.textObject) {
 
             command.textObject.setPosition(
-                command.x,
-                command.y
+                    Math.round(command.x),
+                    Math.round(command.y)
             );
 
         }
 
-        if (command.y > 650) {
+        if (command.y > this.scale.height - 40) {
 
             this.missCommand(command);
 
@@ -280,8 +281,11 @@ update(time, delta) {
 
 
         let card =
-            this.add.rectangle(
-        Phaser.Math.Between(200, 1080),
+        this.add.rectangle(
+            Phaser.Math.Between(
+                150,
+                this.scale.width - 150
+            ),
         -60,
         280,
         90,
@@ -593,18 +597,18 @@ this.commands.push(card);
     );
 
 
-    this.cameras.main.shake(
-        100,
-        0.005
-    );
+   // this.cameras.main.shake(
+     //   100,
+       // 0.005
+    //);
 
 
     let error =
         this.add.text(
 
-            640,
+        this.scale.width / 2,
 
-            360,
+        this.scale.height / 2,
 
             "WRONG KEY",
 
