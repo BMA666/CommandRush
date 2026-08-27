@@ -253,8 +253,6 @@ button.on(
             this.nameInput.value.trim();
 
 
-        // Имя обязательно
-
         if (!playerName) {
 
             this.nameInput.focus();
@@ -271,12 +269,37 @@ button.on(
             "none";
 
 
-        this.scene.start(
-            "GameScene",
-            {
-                playerName: playerName
-            }
-        );
+        // Запоминаем имя
+        this.pendingPlayerName =
+            playerName;
+
+
+        // Хоткеи открыты перед стартом игры
+        this.startAfterHotkeys =
+            true;
+
+
+        // Прячем HTML-поле имени
+        this.nameInput.style.display =
+            "none";
+
+        this.nameLabel.style.display =
+            "none";
+
+
+        // Показываем памятку
+        overlay.setVisible(true);
+
+        hotkeysImage.setVisible(true);
+
+        closeButton
+            .setText("START")
+            .setPosition(
+                centerX,
+                height * 0.97
+            )
+            .setFontSize(30)
+            .setVisible(true);
 
     }
 );
@@ -387,11 +410,30 @@ button.on(
             "pointerdown",
             () => {
 
+                this.startAfterHotkeys =
+                    false;
+
+
+                this.nameInput.style.display =
+                    "none";
+
+                this.nameLabel.style.display =
+                    "none";
+
+
                 overlay.setVisible(true);
 
                 hotkeysImage.setVisible(true);
 
-                closeButton.setVisible(true);
+
+                closeButton
+                    .setText("✕")
+                    .setPosition(
+                        width - 45,
+                        45
+                    )
+                    .setFontSize(36)
+                    .setVisible(true);
 
             }
         );
@@ -405,11 +447,36 @@ button.on(
             "pointerdown",
             () => {
 
+                // Если памятка была открыта через PLAY
+                if (this.startAfterHotkeys) {
+
+                    this.scene.start(
+                        "GameScene",
+                        {
+                            playerName:
+                                this.pendingPlayerName
+                        }
+                    );
+
+                    return;
+
+                }
+
+
+                // Если просто открыли HOTKEYS из меню
+
                 overlay.setVisible(false);
 
                 hotkeysImage.setVisible(false);
 
                 closeButton.setVisible(false);
+
+
+                this.nameInput.style.display =
+                    "block";
+
+                this.nameLabel.style.display =
+                    "block";
 
             }
         );

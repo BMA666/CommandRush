@@ -54,67 +54,67 @@ export default class GameScene extends Phaser.Scene {
         this.commandList = [
 
             {
-                name:"Accept",
+                name:"Accept【SPACE】",
                 key:"SPACE"
             },
 
             {
-                name:"Take control",
+                name:"Take control【C】",
                 key:"C"
             },
 
             {
-                name:"Auto",
+                name:"Auto【F】",
                 key:"F"
             },
 
             {
-                name:"Done",
+                name:"Done【R】",
                 key:"R"
             },
 
             {
-                name:"False",
+                name:"False【T】",
                 key:"T"
             },
 
             {
-                name:"Rovers",
+                name:"Rovers【Q】",
                 key:"Q"
             },
 
             {
-                name:"Hide Map",
+                name:"Hide Map【V】",
                 key:"V"
             },
 
             {
-                name:"Control",
+                name:"Control【1】",
                 key:"1"
             },
 
             {
-                name:"Info",
+                name:"Info【2】",
                 key:"2"
             },
             
             {
-                name: "↑",
+                name: "⬆",
                 key: "W"
             },
 
             {
-                name: "↓",
+                name: "⬇",
                 key: "S"
             },
 
             {
-                name: "←",
+                name: "⬅",
                 key: "A"
             },
 
             {
-                name: "→",
+                name: "⮕",
                 key: "D"
             },
 
