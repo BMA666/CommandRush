@@ -54,47 +54,56 @@ export default class GameScene extends Phaser.Scene {
         this.commandList = [
 
             {
-                name:"Accept【SPACE】",
+                name:"Accept",
+                hint: "【SPACE】",
                 key:"SPACE"
             },
 
             {
-                name:"Take control【C】",
+                name:"Take control",
+                hint: "【C】",
                 key:"C"
             },
 
             {
-                name:"Auto【F】",
+                name:"Auto",
+                hint: "【F】",
                 key:"F"
             },
 
             {
-                name:"Done【R】",
+                name:"Done",
+                hint: "【R】",
                 key:"R"
             },
 
             {
-                name:"False【T】",
+                name:"False",
+                hint: "【T】",
                 key:"T"
             },
 
             {
-                name:"Rovers【Q】",
+                name:"Rovers",
+                hint: "【Q】",
                 key:"Q"
             },
 
             {
-                name:"Hide Map【V】",
+                name:"Hide Map",
+                hint: "【V】",
                 key:"V"
             },
 
             {
-                name:"Control【1】",
+                name:"Control",
+                hint: "【1】",
                 key:"1"
             },
 
             {
-                name:"Info【2】",
+                name:"Info",
+                hint: "【2】",
                 key:"2"
             },
             
@@ -129,7 +138,7 @@ export default class GameScene extends Phaser.Scene {
         this.scoreText = this.add.text(
             40,
             30,
-            "Score: 0",
+            "Счет: 0",
             {
                 fontFamily:"Arial",
                 fontSize:"28px",
@@ -141,7 +150,7 @@ export default class GameScene extends Phaser.Scene {
         this.comboText = this.add.text(
             this.scale.width / 2,
             30,
-            "Combo: x0",
+            "Серия: x0",
             {
                 fontFamily:"Arial",
                 fontSize:"28px",
@@ -165,7 +174,7 @@ export default class GameScene extends Phaser.Scene {
         this.speedText = this.add.text(
     40,
     75,
-    "Speed: x1.0",
+    "Скорость: x1.0",
     {
         fontFamily:"Arial",
         fontSize:"22px",
@@ -233,7 +242,7 @@ update(time, delta) {
         (this.speed / 120).toFixed(1);
 
     this.speedText.setText(
-        "Speed: x" + speedMultiplier
+        "Скорость: x" + speedMultiplier
     );
 
 
@@ -255,6 +264,15 @@ update(time, delta) {
             command.textObject.setPosition(
                     Math.round(command.x),
                     Math.round(command.y)
+            );
+
+        }
+        
+        if (command.hintObject) {
+
+            command.hintObject.setPosition(
+                command.x,
+                command.y + 22
             );
 
         }
@@ -305,23 +323,35 @@ update(time, delta) {
 
 
 
-        let text =
-            this.add.text(
-                card.x,
-                card.y,
-                data.name,
-                {
-                    fontFamily:"Arial",
-                    fontSize:"30px",
-                    color:"#111827",
-                    fontStyle:"bold"
-                }
-            )
-            .setOrigin(0.5);
+        const nameText = this.add.text(
+            card.x,
+            card.y - 10,
+            data.name,
+            {
+                fontFamily: "Arial",
+                fontSize: "30px",
+                color: "#111827",
+                fontStyle: "bold"
+            }
+        ).setOrigin(0.5);
+
+
+        const hintText = this.add.text(
+            card.x,
+            card.y + 22,
+            data.hint,
+            {
+                fontFamily: "Arial",
+                fontSize: "20px",
+                color: "#6b7280",
+                fontStyle: "bold"
+            }
+        ).setOrigin(0.5);
 
 
 
-  card.textObject = text;
+card.textObject = nameText;
+card.hintObject = hintText;
 
 
 // начальное состояние анимации
@@ -329,7 +359,8 @@ update(time, delta) {
 card.alpha = 0;
 card.scale = 0.8;
 
-text.alpha = 0;
+nameText.alpha = 0;
+hintText.alpha = 0;
 
 
 // появление карточки
@@ -351,7 +382,7 @@ this.tweens.add({
 
 this.tweens.add({
 
-    targets: text,
+    targets: [nameText, hintText],
 
     alpha: 1,
 
@@ -518,12 +549,12 @@ this.commands.push(card);
 
 
         this.scoreText.setText(
-            "Score: " + this.score
+            "Счет: " + this.score
         );
 
 
         this.comboText.setText(
-            "Combo: x" + this.combo
+            "Серия: x" + this.combo
         );
 
     // Удаляем выбранную карточку
@@ -593,7 +624,7 @@ this.commands.push(card);
 
 
     this.comboText.setText(
-        "Combo: x0"
+        "Серия: x0"
     );
 
 
@@ -610,7 +641,7 @@ this.commands.push(card);
 
         this.scale.height / 2,
 
-            "WRONG KEY",
+            "НЕВЕРНО",
 
             {
                 fontFamily:"Arial",

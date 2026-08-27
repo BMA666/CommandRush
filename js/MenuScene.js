@@ -55,7 +55,7 @@ export default class MenuScene extends Phaser.Scene {
         this.add.text(
             centerX,
             height * 0.35,
-            "React faster. Command faster.",
+            "Этот тренажер был создан для изучения хоткеев",
             {
                 fontFamily: "sans-serif",
                 fontSize: 24,
@@ -75,8 +75,8 @@ export default class MenuScene extends Phaser.Scene {
 
         this.bestText = this.add.text(
             centerX,
-            height * 0.42,
-            "Best score: " + bestScore,
+            height * 0.75,
+            "Лучшая попытка: " + bestScore,
             {
                 fontFamily: "sans-serif",
                 fontSize: 28,
@@ -92,7 +92,7 @@ export default class MenuScene extends Phaser.Scene {
 
         this.nameLabel = document.createElement("div");
 
-        this.nameLabel.textContent = "Enter your name";
+        this.nameLabel.textContent = "";
 
         this.nameLabel.style.position = "absolute";
         this.nameLabel.style.left = "50%";
@@ -122,7 +122,7 @@ export default class MenuScene extends Phaser.Scene {
         this.nameInput.type = "text";
 
         this.nameInput.placeholder =
-            "Your name";
+            "Ваше имя";
 
         this.nameInput.maxLength = 30;
 
@@ -208,7 +208,7 @@ export default class MenuScene extends Phaser.Scene {
             this.add.text(
                 centerX,
                 buttonY,
-                "PLAY",
+                "ТРЕИНРОВКА",
                 {
                     fontFamily: "sans-serif",
                     fontSize: 34,

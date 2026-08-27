@@ -85,7 +85,7 @@ create(){
     this.add.text(
         centerX,
         height * 0.18,
-        "GAME OVER",
+        "Тренировка окончена",
         {
             fontFamily:"sans-serif",
             fontSize:"64px",
@@ -101,7 +101,7 @@ create(){
     this.add.text(
         centerX,
         height * 0.34,
-        "Score: " + this.finalScore,
+        "Результат: " + this.finalScore,
         {
             fontFamily:"sans-serif",
             fontSize:"36px",
@@ -116,7 +116,7 @@ create(){
     this.add.text(
         centerX,
         height * 0.43,
-        "Best combo: x" + this.finalCombo,
+        "Лучшая серия: x" + this.finalCombo,
         {
             fontFamily:"sans-serif",
             fontSize:"28px",
@@ -137,7 +137,7 @@ create(){
     this.add.text(
         centerX,
         height * 0.52,
-        "Record: " + best,
+        "Лучший результат: " + best,
         {
             fontFamily:"sans-serif",
             fontSize:"28px",
@@ -169,7 +169,7 @@ create(){
         this.add.text(
             centerX,
             buttonY,
-            "PLAY AGAIN",
+            "Попроовать ещё",
             {
                 fontFamily:"sans-serif",
                 fontSize:"30px",
@@ -223,7 +223,7 @@ create(){
         this.add.text(
             centerX,
             height * 0.84,
-            "Main Menu",
+            "Главное меню",
             {
                 fontFamily:"sans-serif",
                 fontSize:"24px",
