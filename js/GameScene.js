@@ -236,7 +236,7 @@ update(time, delta) {
 
     this.speed =
         120 +
-        this.timeAlive * 5;
+        this.timeAlive * 2.5;
 
     let speedMultiplier =
         (this.speed / 120).toFixed(1);
@@ -528,6 +528,8 @@ this.commands.push(card);
 
 
     successCommand(command){
+
+    this.successfulCommands++;
     
     this.score += 100;
 
@@ -705,6 +707,12 @@ this.commands.push(card);
 
         }
 
+        if(command.hintObject){
+
+            command.hintObject.destroy();
+
+        }
+
 
         command.destroy();
 
@@ -735,6 +743,11 @@ this.commands.push(card);
 
             }
 
+            if(command.hintObject){
+
+                command.hintObject.destroy();
+
+            }
 
             command.destroy();
 

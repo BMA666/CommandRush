@@ -71,145 +71,250 @@ async saveResult(){
 
 }
 
-create(){
+create() {
 
     this.cameras.main.setBackgroundColor("#111827");
+
 
     const width = this.scale.width;
     const height = this.scale.height;
     const centerX = width / 2;
 
 
-    // Заголовок
+    // =====================================================
+    // НАЗВАНИЕ
+    // =====================================================
+
+    this.add.text(
+        centerX,
+        height * 0.10,
+        "HOTKEY NINJA",
+        {
+            fontFamily: "sans-serif",
+            fontSize: 22,
+            color: "#6b7280",
+            fontStyle: "bold"
+        }
+    )
+    .setOrigin(0.5);
+
+
+    // =====================================================
+    // ЗАГОЛОВОК
+    // =====================================================
 
     this.add.text(
         centerX,
         height * 0.18,
-        "Тренировка окончена",
+        "ТРЕНИРОВКА ЗАВЕРШЕНА",
         {
-            fontFamily:"sans-serif",
-            fontSize:"64px",
-            color:"#ffffff",
-            fontStyle:"bold"
+            fontFamily: "sans-serif",
+            fontSize: 34,
+            color: "#ffffff",
+            fontStyle: "bold"
         }
     )
     .setOrigin(0.5);
 
 
-    // Очки
+    // =====================================================
+    // СЧЁТ
+    // =====================================================
 
     this.add.text(
         centerX,
-        height * 0.34,
-        "Результат: " + this.finalScore,
+        height * 0.30,
+        this.finalScore,
         {
-            fontFamily:"sans-serif",
-            fontSize:"36px",
-            color:"#facc15"
+            fontFamily: "sans-serif",
+            fontSize: 64,
+            color: "#facc15",
+            fontStyle: "bold"
         }
     )
     .setOrigin(0.5);
-
-
-    // Комбо
-
-    this.add.text(
-        centerX,
-        height * 0.43,
-        "Лучшая серия: x" + this.finalCombo,
-        {
-            fontFamily:"sans-serif",
-            fontSize:"28px",
-            color:"#ffffff"
-        }
-    )
-    .setOrigin(0.5);
-
-
-    // Лучший результат
-
-    let best =
-        localStorage.getItem(
-            "commandRushBest"
-        ) || 0;
 
 
     this.add.text(
         centerX,
-        height * 0.52,
-        "Лучший результат: " + best,
+        height * 0.365,
+        "СЧЁТ",
         {
-            fontFamily:"sans-serif",
-            fontSize:"28px",
-            color:"#4ade80"
+            fontFamily: "sans-serif",
+            fontSize: 16,
+            color: "#6b7280"
         }
     )
     .setOrigin(0.5);
 
 
-    // Кнопка повторить
+    // =====================================================
+    // СТАТИСТИКА
+    // =====================================================
 
-    const buttonY = height * 0.70;
+    const statsX = centerX;
+    const labelX = statsX - 150;
+    const valueX = statsX + 150;
 
-    let button = this.add.rectangle(
-        centerX,
-        buttonY,
-        300,
-        80,
-        0xffffff
+    const startY = height * 0.46;
+    const gap = 42;
+
+
+    const addStat = (label, value, y) => {
+
+        this.add.text(
+            labelX,
+            y,
+            label,
+            {
+                fontFamily: "sans-serif",
+                fontSize: 19,
+                color: "#9ca3af"
+            }
+        )
+        .setOrigin(0, 0.5);
+
+
+        this.add.text(
+            valueX,
+            y,
+            value,
+            {
+                fontFamily: "sans-serif",
+                fontSize: 20,
+                color: "#ffffff",
+                fontStyle: "bold"
+            }
+        )
+        .setOrigin(1, 0.5);
+
+    };
+
+
+    addStat(
+        "Лучшая серия",
+        this.finalCombo,
+        startY
     );
 
 
-    button.setInteractive({
-        useHandCursor:true
-    });
+    addStat(
+        "Верных команд",
+        this.successfulCommands,
+        startY + gap
+    );
 
 
-    let buttonText =
+    addStat(
+        "Пропущено",
+        this.missedCommands,
+        startY + gap * 2
+    );
+
+
+    addStat(
+        "Ошибок",
+        this.wrongAnswers,
+        startY + gap * 3
+    );
+
+
+    // =====================================================
+    // ВРЕМЯ
+    // =====================================================
+
+    const totalSeconds =
+        Math.floor(this.playTime);
+
+
+    const minutes =
+        Math.floor(totalSeconds / 60);
+
+
+    const seconds =
+        totalSeconds % 60;
+
+
+    const formattedTime =
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(seconds).padStart(2, "0");
+
+
+    addStat(
+        "Время",
+        formattedTime,
+        startY + gap * 4
+    );
+
+
+    // =====================================================
+    // ЕЩЁ РАЗ
+    // =====================================================
+
+    const retryY =
+        height * 0.78;
+
+
+    const retryButton =
+        this.add.rectangle(
+            centerX,
+            retryY,
+            300,
+            64,
+            0xffffff
+        )
+        .setInteractive({
+            useHandCursor: true
+        });
+
+
+    const retryText =
         this.add.text(
             centerX,
-            buttonY,
-            "Попроовать ещё",
+            retryY,
+            "ЕЩЁ РАЗ",
             {
-                fontFamily:"sans-serif",
-                fontSize:"30px",
-                color:"#111827",
-                fontStyle:"bold"
+                fontFamily: "sans-serif",
+                fontSize: 24,
+                color: "#111827",
+                fontStyle: "bold"
             }
         )
         .setOrigin(0.5);
 
 
-    button.on(
+    retryButton.on(
         "pointerover",
-        ()=>{
+        () => {
 
-            button.setScale(1.05);
-            buttonText.setScale(1.05);
+            retryButton.setScale(1.04);
+            retryText.setScale(1.04);
 
         }
     );
 
 
-    button.on(
+    retryButton.on(
         "pointerout",
-        ()=>{
+        () => {
 
-            button.setScale(1);
-            buttonText.setScale(1);
+            retryButton.setScale(1);
+            retryText.setScale(1);
 
         }
     );
 
 
-    button.on(
+    retryButton.on(
         "pointerdown",
-        ()=>{
+        () => {
 
             this.scene.start(
                 "GameScene",
                 {
-                    playerName: this.playerName
+                    playerName:
+                        this.playerName
                 }
             );
 
@@ -217,30 +322,30 @@ create(){
     );
 
 
-    // Возврат в меню
+    // =====================================================
+    // ГЛАВНОЕ МЕНЮ
+    // =====================================================
 
-    let menuButton =
+    const menuButton =
         this.add.text(
             centerX,
-            height * 0.84,
+            height * 0.88,
             "Главное меню",
             {
-                fontFamily:"sans-serif",
-                fontSize:"24px",
-                color:"#9ca3af"
+                fontFamily: "sans-serif",
+                fontSize: 18,
+                color: "#60a5fa"
             }
         )
-        .setOrigin(0.5);
-
-
-    menuButton.setInteractive({
-        useHandCursor:true
-    });
+        .setOrigin(0.5)
+        .setInteractive({
+            useHandCursor: true
+        });
 
 
     menuButton.on(
         "pointerover",
-        ()=>{
+        () => {
 
             menuButton.setScale(1.05);
 
@@ -250,7 +355,7 @@ create(){
 
     menuButton.on(
         "pointerout",
-        ()=>{
+        () => {
 
             menuButton.setScale(1);
 
@@ -260,7 +365,7 @@ create(){
 
     menuButton.on(
         "pointerdown",
-        ()=>{
+        () => {
 
             this.scene.start(
                 "MenuScene"
@@ -268,6 +373,5 @@ create(){
 
         }
     );
-
 }
 }
