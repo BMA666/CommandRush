@@ -29,11 +29,7 @@ create() {
     // РАЗМЕРЫ
     // =====================================================
 
-    const titleSize =
-        Math.max(
-            44,
-            Math.min(64, width * 0.05)
-        );
+    const titleSize = 64;
 
 
     // =====================================================
@@ -46,7 +42,7 @@ create() {
         "HOTKEY NINJA",
         {
             fontFamily: "sans-serif",
-            fontSize: titleSize,
+            fontSize: 64,
             color: "#ffffff",
             fontStyle: "bold"
         }

@@ -2,13 +2,12 @@ import MenuScene from "./MenuScene.js";
 import GameScene from "./GameScene.js";
 import ResultScene from "./ResultScene.js";
 
-
 const config = {
 
     type: Phaser.AUTO,
-    pixelArt: true,
-    width: window.innerWidth,
-    height: window.innerHeight,
+
+    width: 1920,
+    height: 1080,
 
     parent: "game",
 
@@ -17,10 +16,15 @@ const config = {
     resolution: 1,
 
     scale: {
-        mode: Phaser.Scale.RESIZE,
-        parent: "game",
-        width: window.innerWidth,
-        height: window.innerHeight
+
+        mode: Phaser.Scale.FIT,
+
+        autoCenter:
+            Phaser.Scale.CENTER_BOTH,
+
+        width: 1920,
+        height: 1080
+
     },
 
     scene: [
@@ -30,6 +34,5 @@ const config = {
     ]
 
 };
-
 
 new Phaser.Game(config);
