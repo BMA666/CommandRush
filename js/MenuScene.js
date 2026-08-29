@@ -250,7 +250,7 @@ create() {
     this.bestText =
         this.add.text(
             centerX,
-            height * 0.650,
+            height * 0.648,
             "Лучшая попытка  •  " + bestScore,
             {
                 fontFamily: "sans-serif",
@@ -268,7 +268,7 @@ create() {
     const hotkeysButton =
         this.add.text(
             centerX,
-            height * 0.70,
+            height * 0.67,
             "Памятка по хоткеям",
             {
                 fontFamily: "sans-serif",

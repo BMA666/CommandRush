@@ -590,7 +590,7 @@ this.commands.push(card);
 
 
         this.comboText.setText(
-            "Combo: x0"
+            "Серия: x0"
         );
 
 
